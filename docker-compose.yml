@@ -17,6 +17,7 @@ services:
     volumes:
       - '.:/app'
       - bundle:/usr/local/bundle
+      - ./vendor/assets/fonts:/usr/share/fonts
     ports:
       - '3000:3000'
     depends_on:
