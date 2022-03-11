@@ -9,7 +9,7 @@ module V1
         format.json do
           authorize @scorecard, :download?
 
-          render json: @scorecard
+          render json: @scorecard, serializer: serializer_klass
         end
 
         format.pdf do

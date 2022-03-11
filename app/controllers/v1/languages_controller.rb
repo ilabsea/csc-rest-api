@@ -6,7 +6,7 @@ module V1
       authorize CscCore::Language, :index?
       program = CscCore::Program.find_by(id: params[:program_id])
 
-      render json: program.languages
+      render json: program.languages, each_serializer: serializer_klass
     end
   end
 end

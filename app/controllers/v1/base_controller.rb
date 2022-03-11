@@ -19,6 +19,14 @@ module V1
       raise ::V1::Exceptions::RoutingError.new(request.method, params[:path])
     end
 
+    def serializer_klass
+      @serializer_klass ||= serializer_klass_name.safe_constantize
+    end
+
+    def serializer_klass_name
+      @serializer_klass_name ||= "#{self.class.name.underscore.sub(/_controller$/, '').singularize}_serializer".camelize
+    end
+
     private
       def restrict_access
         @current_user = CscCore::User.from_authentication_token(auth_token)

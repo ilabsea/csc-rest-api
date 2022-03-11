@@ -6,7 +6,7 @@ module V1
       authorize CscCore::Indicator, :index?
       facility = CscCore::Facility.find(params[:facility_id])
 
-      render json: facility.indicators.predefines
+      render json: facility.indicators.predefines, each_serializer: serializer_klass
     end
   end
 end
