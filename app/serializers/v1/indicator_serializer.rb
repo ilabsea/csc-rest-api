@@ -1,19 +1,5 @@
 # frozen_string_literal: true
 
-# == Schema Information
-#
-# Table name: indicators
-#
-#  id                 :bigint           not null, primary key
-#  categorizable_id   :integer
-#  categorizable_type :string
-#  name               :string
-#  created_at         :datetime         not null
-#  updated_at         :datetime         not null
-#  tag_id             :integer
-#  display_order      :integer
-#  image              :string
-#
 module V1
   class IndicatorSerializer < ActiveModel::Serializer
     attributes :id, :name, :tag_id, :tag_name, :image
