@@ -6,7 +6,7 @@ ruby '2.7.2'
 gem 'csc_core',  path: 'engines/csc_core'
 
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails', branch: 'main'
-gem 'rails', '~> 6.1.4', '>= 6.1.4.6'
+gem 'rails', '~> 6.1.4', '>= 6.1.5'
 # Use postgresql as the database for Active Record
 gem 'pg', '~> 1.1'
 # Use Puma as the app server
