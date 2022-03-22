@@ -10,7 +10,11 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
+<<<<<<< HEAD
 ActiveRecord::Schema.define(version: 2022_03_11_084481) do
+=======
+ActiveRecord::Schema.define(version: 2022_03_21_034595) do
+>>>>>>> Api V2: add api profile and handle scorecard participant profile
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -50,6 +54,15 @@ ActiveRecord::Schema.define(version: 2022_03_11_084481) do
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.index ["deleted_at"], name: "index_cafs_on_deleted_at"
+  end
+
+  create_table "categories", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.string "code"
+    t.string "name_en"
+    t.string "name_km"
+    t.string "hierarchy"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
   end
 
   create_table "chat_groups", force: :cascade do |t|
@@ -103,6 +116,18 @@ ActiveRecord::Schema.define(version: 2022_03_11_084481) do
     t.datetime "updated_at", precision: 6, null: false
   end
 
+  create_table "datasets", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.string "code"
+    t.string "name_en"
+    t.string "name_km"
+    t.string "category_id"
+    t.string "province_id"
+    t.string "district_id"
+    t.string "commune_id"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+  end
+
   create_table "educational_backgrounds", force: :cascade do |t|
     t.string "code"
     t.string "name_en"
@@ -133,6 +158,7 @@ ActiveRecord::Schema.define(version: 2022_03_11_084481) do
     t.boolean "default", default: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.string "category_id"
     t.index ["lft"], name: "index_facilities_on_lft"
     t.index ["parent_id"], name: "index_facilities_on_parent_id"
     t.index ["rgt"], name: "index_facilities_on_rgt"
@@ -190,6 +216,7 @@ ActiveRecord::Schema.define(version: 2022_03_11_084481) do
     t.integer "program_id"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.uuid "uuid", default: -> { "uuid_generate_v4()" }
   end
 
   create_table "languages_indicators", force: :cascade do |t|
@@ -322,6 +349,13 @@ ActiveRecord::Schema.define(version: 2022_03_11_084481) do
     t.datetime "updated_at", precision: 6, null: false
   end
 
+  create_table "participants_profiles", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.string "participant_id"
+    t.uuid "profile_id"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+  end
+
   create_table "pdf_templates", force: :cascade do |t|
     t.string "name"
     t.text "content"
@@ -338,6 +372,14 @@ ActiveRecord::Schema.define(version: 2022_03_11_084481) do
     t.string "commune_id"
     t.string "district_id"
     t.string "province_id"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+  end
+
+  create_table "profiles", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.string "code"
+    t.string "name_en"
+    t.string "name_km"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
   end
@@ -479,6 +521,7 @@ ActiveRecord::Schema.define(version: 2022_03_11_084481) do
     t.integer "completor_id"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.string "dataset_code"
     t.index ["deleted_at"], name: "index_scorecards_on_deleted_at"
     t.index ["uuid"], name: "index_scorecards_on_uuid"
   end
