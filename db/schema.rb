@@ -10,11 +10,12 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_02_24_041281) do
+ActiveRecord::Schema.define(version: 2022_03_11_084481) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
   enable_extension "plpgsql"
+  enable_extension "uuid-ossp"
 
   create_table "activity_logs", force: :cascade do |t|
     t.string "controller_name"
@@ -348,6 +349,14 @@ ActiveRecord::Schema.define(version: 2022_02_24_041281) do
     t.string "shortcut_name"
     t.text "dashboard_user_emails", default: [], array: true
     t.string "dashboard_user_roles", default: [], array: true
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.uuid "uuid", default: -> { "uuid_generate_v4()" }
+  end
+
+  create_table "quotas", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.integer "program_id"
+    t.integer "quantity"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
   end

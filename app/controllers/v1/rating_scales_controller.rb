@@ -6,7 +6,7 @@ module V1
       authorize CscCore::RatingScale, :index?
       program = CscCore::Program.find(params[:program_id])
 
-      render json: program.rating_scales
+      render json: program.rating_scales, each_serializer: serializer_klass
     end
   end
 end

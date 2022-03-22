@@ -5,7 +5,7 @@ module V1
     skip_before_action :restrict_access, only: :system_contacts
 
     def index
-      render json: current_user.program.contacts
+      render json: current_user.program.contacts, each_serializer: serializer_klass
     end
 
     def system_contacts
