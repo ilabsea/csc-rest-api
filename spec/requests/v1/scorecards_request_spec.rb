@@ -215,9 +215,9 @@ RSpec.describe V1::ScorecardsController, type: :request do
   describe "PUT #update, raised_indicator and voting_indicators" do
     let!(:user)       { create(:user) }
     let!(:facility)   { create(:facility, :with_parent, :with_indicators) }
-    let!(:custom_indicator) {create(:indicator, type: 'CscCore::Indicators::CustomIndicator', categorizable: facility)}
-    let!(:custom_indicator2) {create(:indicator, type: 'CscCore::Indicators::CustomIndicator', categorizable: facility)}
-    let!(:indicator)   { facility.indicators.first }
+    let!(:custom_indicator) { ::Indicator.create(categorizable: facility, type: 'Indicators::CustomIndicator', name: 'Custom1') }
+    let!(:custom_indicator2) { CscCore::Indicator.create(categorizable: facility, type: 'CscCore::Indicators::CustomIndicator', name: 'Custom2') }
+    let!(:indicator)   { ::Indicator.create(categorizable: facility, type: 'Indicator', name: 'Indicator1') }
     let!(:scorecard)  { create(:scorecard, number_of_participant: 3, program: user.program, facility: facility) }
     let(:headers)     { { "ACCEPT" => "application/json", "Authorization" => "Token #{user.authentication_token}" } }
     let(:params)      { { raised_indicators_attributes: [

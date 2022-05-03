@@ -65,12 +65,10 @@ module V1
 
         # Todo remove after device is no longer installed mobile app 1.4.2 (require report from play store)
         (param[:raised_indicators_attributes] || []).each do |ri|
-          ri[:indicatorable_type] = 'CscCore::Indicators::CustomIndicator' if ri[:indicatorable_type] == 'CustomIndicator'
-          ri[:indicatorable_type] = 'CscCore::Indicator' if ri[:indicatorable_type] == 'Indicator'
+          ri[:indicatorable_type] = "Indicators::CustomIndicator" if ri[:indicatorable_type] == "CustomIndicator"
         end
         (param[:voting_indicators_attributes] || []).each do |ri|
-          ri[:indicatorable_type] = 'CscCore::Indicators::CustomIndicator' if ri[:indicatorable_type] == 'CustomIndicator'
-          ri[:indicatorable_type] = 'CscCore::Indicator' if ri[:indicatorable_type] == 'Indicator'
+          ri[:indicatorable_type] = "Indicators::CustomIndicator" if ri[:indicatorable_type] == "CustomIndicator"
         end
 
         param

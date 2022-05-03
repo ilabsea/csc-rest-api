@@ -10,11 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-<<<<<<< HEAD
-ActiveRecord::Schema.define(version: 2022_03_11_084481) do
-=======
 ActiveRecord::Schema.define(version: 2022_03_21_034595) do
->>>>>>> Api V2: add api profile and handle scorecard participant profile
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"

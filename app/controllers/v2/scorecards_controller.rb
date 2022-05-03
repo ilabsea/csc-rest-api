@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+# This version can be used when device is no longer installed mobile app 1.4.4
+
 module V2
   class ScorecardsController < BaseController
     before_action :assign_scorecard
@@ -42,34 +44,22 @@ module V2
       end
 
       def scorecard_params
-        param = params.require(:scorecard).permit(
+        params.require(:scorecard).permit(
           :conducted_date, :number_of_caf, :number_of_participant, :number_of_female,
           :number_of_disability, :number_of_ethnic_minority, :number_of_youth, :number_of_id_poor,
           :finished_date, :language_conducted_code, :running_date, :device_type, :device_token,
           facilitators_attributes: [ :id, :caf_id, :position, :scorecard_uuid ],
           participants_attributes: [ :uuid, :age, :gender, :scorecard_uuid, profile_ids: [] ],
           raised_indicators_attributes: [
-            :indicator_uuid, :indicatorable_id, :indicatorable_type, :participant_uuid, :selected, :voting_indicator_uuid, :scorecard_uuid, tag_attributes: [:name]
+            :indicator_uuid, :participant_uuid, :selected, :voting_indicator_uuid, :scorecard_uuid, tag_attributes: [:name]
           ],
           voting_indicators_attributes: [
-            :uuid, :indicator_uuid, :indicatorable_id, :indicatorable_type, :participant_uuid,
+            :uuid, :indicator_uuid, :participant_uuid,
             :median, :scorecard_uuid, :display_order,
             indicator_activities_attributes: [ :uuid, :voting_indicator_uuid, :scorecard_uuid, :content, :selected, :type ]
           ],
           ratings_attributes: [ :uuid, :voting_indicator_uuid, :participant_uuid, :scorecard_uuid, :score ]
         )
-
-        # Todo remove after device is no longer installed mobile app 1.4.2 (require report from play store)
-        (param[:raised_indicators_attributes] || []).each do |ri|
-          ri[:indicatorable_type] = 'CscCore::Indicators::CustomIndicator' if ri[:indicatorable_type] == 'Indicators::CustomIndicator'
-          ri[:indicatorable_type] = 'CscCore::Indicator' if ri[:indicatorable_type] == 'Indicator'
-        end
-        (param[:voting_indicators_attributes] || []).each do |ri|
-          ri[:indicatorable_type] = 'CscCore::Indicators::CustomIndicator' if ri[:indicatorable_type] == 'Indicators::CustomIndicator'
-          ri[:indicatorable_type] = 'CscCore::Indicator' if ri[:indicatorable_type] == 'Indicator'
-        end
-
-        param
       end
   end
 end
