@@ -9,6 +9,7 @@ RSpec.describe V1::CustomIndicatorsController, type: :request do
     let(:json_response) { JSON.parse(response.body) }
     let(:headers)     { { "ACCEPT" => "application/json", "Authorization" => "Token #{user.authentication_token}" } }
     let(:params)      { { name: "Staff not commig on time", tag_attributes: { name: "timing" }, audio: "" } }
+    let(:custom_indicators) { Indicator.where(categorizable: scorecard.facility).customs }
 
     context "success" do
       before {
@@ -17,7 +18,7 @@ RSpec.describe V1::CustomIndicatorsController, type: :request do
 
       it { expect(response.content_type).to eq("application/json; charset=utf-8") }
       it { expect(response).to have_http_status(:created) }
-      it { expect(scorecard.facility.indicators.customs.length).to eq(1) }
+      it { expect(custom_indicators.length).to eq(1) }
     end
 
     context "scorecard is locked!" do
@@ -50,7 +51,7 @@ RSpec.describe V1::CustomIndicatorsController, type: :request do
 
       it { expect(response.content_type).to eq("application/json; charset=utf-8") }
       it { expect(response).to have_http_status(:created) }
-      it { expect(scorecard.facility.indicators.customs.length).to eq(1) }
+      it { expect(custom_indicators.length).to eq(1) }
     end
   end
 end

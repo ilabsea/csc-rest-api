@@ -1,21 +1,43 @@
 # syntax=docker/dockerfile:1
 FROM ruby:2.7.2
-RUN apt-get update -qq && apt-get install -y nodejs postgresql-client
+
+LABEL maintainer="Sokly HENG <sokly@instedd.org>"
+
+RUN curl -sL https://deb.nodesource.com/setup_14.x | bash - && \
+  echo "deb https://dl.yarnpkg.com/debian/ stable main" | tee /etc/apt/sources.list.d/yarn.list && \
+  curl -sL https://dl.yarnpkg.com/debian/pubkey.gpg | apt-key add - && \
+  apt-get update -qq && \
+  apt-get install -y nodejs yarn postgresql-client cron && \
+  apt-get clean && \
+  rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
+
+RUN mkdir /app
 WORKDIR /app
-COPY Gemfile /app/Gemfile
-COPY Gemfile.lock /app/Gemfile.lock
+
+COPY Gemfile Gemfile.lock /app/
 
 # For engine csc_core
 COPY engines/csc_core/lib/csc_core/version.rb /app/engines/csc_core/lib/csc_core/version.rb
 COPY engines/csc_core/csc_core.gemspec /app/engines/csc_core/csc_core.gemspec
 
-RUN bundle install
+RUN gem install bundler:2.1.4 && \
+  bundle config set deployment 'true' && \
+  bundle install --jobs 10
 
-# Add a script to be executed every time the container starts.
-COPY entrypoint.sh /usr/bin/
-RUN chmod +x /usr/bin/entrypoint.sh
-ENTRYPOINT ["entrypoint.sh"]
-EXPOSE 3000
+# Install the application
+COPY . /app
 
-# Configure the main process to run when running the image
-CMD ["rails", "server", "-b", "0.0.0.0"]
+# Generate version file if available
+RUN if [ -d .git ]; then git describe --always > VERSION; fi
+
+# Precompile assets
+RUN bundle exec rake assets:precompile RAILS_ENV=production
+
+ENV RAILS_LOG_TO_STDOUT=true
+ENV RACK_ENV=production
+ENV RAILS_ENV=staging
+EXPOSE 80
+
+COPY docker/database.yml /app/config/database.yml
+
+CMD ["puma", "-e", "production", "-b", "tcp://0.0.0.0:80"]
