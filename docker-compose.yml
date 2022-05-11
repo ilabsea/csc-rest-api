@@ -10,8 +10,6 @@ services:
       - ./tmp/db:/var/lib/postgresql/data
     environment:
       - POSTGRES_HOST_AUTH_METHOD=trust
-    ports:
-      - 5432:5432
   web:
     build:
       context: .
@@ -22,7 +20,7 @@ services:
       - bundle:/usr/local/bundle
       - ./vendor/assets/fonts:/usr/share/fonts
     ports:
-      - '3001:3000'
+      - '3000:3000'
     env_file: app.env
     depends_on:
       - db

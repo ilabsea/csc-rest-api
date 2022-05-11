@@ -22,6 +22,8 @@ class Indicator < CscCore::ApplicationRecord
 
   include CscCore::Tagable
 
+  mount_uploader :audio, CscCore::AudioUploader
+
   # Constant
   TYPES = %w[Indicators::PredefineIndicator Indicators::CustomIndicator].freeze
 

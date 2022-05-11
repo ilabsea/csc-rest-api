@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_03_21_034595) do
+ActiveRecord::Schema.define(version: 2022_05_06_050044) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -50,6 +50,13 @@ ActiveRecord::Schema.define(version: 2022_03_21_034595) do
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.index ["deleted_at"], name: "index_cafs_on_deleted_at"
+  end
+
+  create_table "cafs_scorecard_knowledges", force: :cascade do |t|
+    t.integer "caf_id"
+    t.uuid "scorecard_knowledge_id"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
   end
 
   create_table "categories", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
@@ -193,6 +200,8 @@ ActiveRecord::Schema.define(version: 2022_03_21_034595) do
     t.string "type"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.datetime "deleted_at"
+    t.index ["deleted_at"], name: "index_indicators_on_deleted_at"
   end
 
   create_table "language_rating_scales", force: :cascade do |t|
@@ -213,6 +222,8 @@ ActiveRecord::Schema.define(version: 2022_03_21_034595) do
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.uuid "uuid", default: -> { "uuid_generate_v4()" }
+    t.datetime "deleted_at"
+    t.index ["deleted_at"], name: "index_languages_on_deleted_at"
   end
 
   create_table "languages_indicators", force: :cascade do |t|
@@ -239,6 +250,8 @@ ActiveRecord::Schema.define(version: 2022_03_21_034595) do
     t.integer "program_id"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.datetime "deleted_at"
+    t.index ["deleted_at"], name: "index_local_ngos_on_deleted_at"
   end
 
   create_table "locations", primary_key: "code", id: :string, force: :cascade do |t|
@@ -449,7 +462,7 @@ ActiveRecord::Schema.define(version: 2022_03_21_034595) do
     t.datetime "updated_at", precision: 6, null: false
   end
 
-  create_table "scorecard_knowledges", force: :cascade do |t|
+  create_table "scorecard_knowledges", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.string "code"
     t.string "name_en"
     t.string "name_km"
