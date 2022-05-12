@@ -48,6 +48,7 @@ module V2
           :conducted_date, :number_of_caf, :number_of_participant, :number_of_female,
           :number_of_disability, :number_of_ethnic_minority, :number_of_youth, :number_of_id_poor,
           :finished_date, :language_conducted_code, :running_date, :device_type, :device_token,
+          :proposed_indicator_method,
           facilitators_attributes: [ :id, :caf_id, :position, :scorecard_uuid ],
           participants_attributes: [ :uuid, :age, :gender, :scorecard_uuid, profile_ids: [] ],
           raised_indicators_attributes: [
